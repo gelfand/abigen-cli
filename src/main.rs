@@ -24,9 +24,13 @@ fn main() -> Result<(), Box<dyn std::error::Error>> {
         args.path.clone()
     };
 
+    std::env::set_var(
+        "CARGO_MANIFEST_DIR",
+        args.path.canonicalize().unwrap().to_str().unwrap(),
+    );
+
     Abigen::new(&args.contract_name, &args.abi)?
         .generate()?
         .write_to_file(&path.as_path())?;
     Ok(())
 }
-
